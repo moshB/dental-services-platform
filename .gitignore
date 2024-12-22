@@ -8,8 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 node_modules/
 .env
-# all-dentals-hub/
-# all-dentals-hub
+all-dentals-hub/
+all-dentals-hub
 node_modules
 dist
 dist-ssr
