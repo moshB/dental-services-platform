@@ -1,0 +1,3 @@
+[submodule "all-dentals-hub"]
+	path = all-dentals-hub
+	url = https://github.com/moshB/all-dentals-hub.git
