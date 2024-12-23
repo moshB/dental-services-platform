@@ -2,8 +2,20 @@ const express = require('express');
 const cors = require('cors');
 const clinicsRoutes = require('./routes/clinicsRoutes');
 
+
 const app = express();
 const PORT = 5000;
+
+// אפשר CORS לדומיינים הרצויים
+app.use(cors({
+  origin: ["https://lovable.dev", "https://dental-services-platform.netlify.app","http://localhost"], // רשימת דומיינים מאושרים
+  methods: ["GET", "POST", "PUT", "DELETE"], // מתודות מאושרות
+  credentials: true // אם נדרש לשלוח קוקיז או אישורים
+}));
+
+app.listen(5000, () => {
+  console.log("Server is running on port 5000");
+});
 
 // אפשר ל-Frontend לגשת לשרת
 app.use(cors());
