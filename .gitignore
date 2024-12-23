@@ -8,6 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 node_modules/
 .env
+frontend/node_modules/
+frontend/.env
 all-dentals-hub/
 all-dentals-hub
 node_modules

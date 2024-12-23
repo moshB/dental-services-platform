@@ -7,6 +7,10 @@ import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { searchClinicsWithRadius } from '../../../controllers/clinicsController'; // נתיב ל-clinicsController
+
+
+
 
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
   const toRadians = (degree) => (degree * Math.PI) / 180;
@@ -81,43 +85,67 @@ const Search = () => {
   const userLatitude = 52.479699; //latitude ||// TODO: For testing purposes, using fixed coordinates for Birmingham
   const userLongitude = -1.902691;//longitude ||
 
-
   const fetchClinics = async () => {
     setLoading(true);
 
     try {
-      // const response = await fetch("http://localhost:5000/api/clinics/search", {
-        const response = await fetch("https://dental-services-platform.netlify.app:5000/api/clinics/search", {
-        
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          service: treatment,
-          latitude: userLatitude,
-          longitude: userLongitude,
-          radius: 3000, // Default radius in kilometers
-        }),
-      });
-      
+      // קריאה לפונקציה החדשה
+      const data = await searchClinicsWithRadius(
+        treatment,
+        userLatitude,
+        userLongitude,
+        3000 // רדיוס ברירת מחדל בקילומטרים
+      );
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch clinics");
-      }
-
-      const data = await response.json();
       if (data.length === 0) {
-        console.warn("No clinics found");
+        console.warn('No clinics found');
       }
-      const processedData = createDentalPracticesArray(data, latitude, longitude);
+
+      const processedData = createDentalPracticesArray(data, userLatitude, userLongitude);
       setPractices(processedData);
     } catch (error) {
-      console.error("Error fetching clinics:", error.message);
+      console.error('Error fetching clinics:', error.message);
     } finally {
       setLoading(false);
     }
   };
+
+  // const fetchClinics = async () => {
+  //   setLoading(true);
+
+  //   try {
+  //     // const response = await fetch("http://localhost:5000/api/clinics/search", {
+  //       const response = await fetch("https://dental-services-platform.netlify.app:5000/api/clinics/search", {
+
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         service: treatment,
+  //         latitude: userLatitude,
+  //         longitude: userLongitude,
+  //         radius: 3000, // Default radius in kilometers
+  //       }),
+  //     });
+
+
+  //     if (!response.ok) {
+  //       throw new Error("Failed to fetch clinics");
+  //     }
+
+  //     const data = await response.json();
+  //     if (data.length === 0) {
+  //       console.warn("No clinics found");
+  //     }
+  //     const processedData = createDentalPracticesArray(data, latitude, longitude);
+  //     setPractices(processedData);
+  //   } catch (error) {
+  //     console.error("Error fetching clinics:", error.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   useEffect(() => {
     if (latitude && longitude && treatment) {

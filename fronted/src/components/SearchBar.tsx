@@ -222,7 +222,7 @@
 import { useState, useEffect } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { supabase } from "@/integrations/supabase/client";
+// import { supabase } from "@/integrations/supabase/client";
 import { MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
