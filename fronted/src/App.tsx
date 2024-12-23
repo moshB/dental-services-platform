@@ -38,9 +38,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const userType = localStorage.getItem("userType");
   const isSignedIn = localStorage.getItem("isSignedIn") === "true";
 
-  if (!isSignedIn) {
-    return <Navigate to="/auth/login" replace />;
-  }
+  // if (!isSignedIn) {
+  //   return <Navigate to="/auth/login" replace />;
+  // }
 
   if (userType === "supplier") {
     return <Navigate to="/supplier/dashboard" replace />;
