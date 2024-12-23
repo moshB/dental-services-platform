@@ -4,6 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 export const OpeningHoursFilter = () => {
   const [startTime, setStartTime] = useState(8); // 8 AM default
+  const [endTime, setEndTime] = useState(17); // 5 PM default
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
 
   const formatTime = (hour: number) => {
@@ -30,6 +31,20 @@ export const OpeningHoursFilter = () => {
     );
   };
 
+  const handleStartTimeChange = (value: number[]) => {
+    const newStartTime = value[0];
+    if (newStartTime < endTime) {
+      setStartTime(newStartTime);
+    }
+  };
+
+  const handleEndTimeChange = (value: number[]) => {
+    const newEndTime = value[0];
+    if (newEndTime > startTime) {
+      setEndTime(newEndTime);
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div>
@@ -39,11 +54,26 @@ export const OpeningHoursFilter = () => {
           max={22}
           step={1}
           value={[startTime]}
-          onValueChange={(value) => setStartTime(value[0])}
+          onValueChange={handleStartTimeChange}
           className="my-4"
         />
         <div className="text-sm text-muted-foreground">
           Opens at {formatTime(startTime)}
+        </div>
+      </div>
+
+      <div>
+        <label className="text-sm font-medium mb-2 block">Closing Time</label>
+        <Slider
+          min={6}
+          max={22}
+          step={1}
+          value={[endTime]}
+          onValueChange={handleEndTimeChange}
+          className="my-4"
+        />
+        <div className="text-sm text-muted-foreground">
+          Closes at {formatTime(endTime)}
         </div>
       </div>
 

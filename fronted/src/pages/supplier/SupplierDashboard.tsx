@@ -9,11 +9,12 @@ import { SupplierOverview } from "@/components/supplier/SupplierOverview";
 import { SupplierInventory } from "@/components/supplier/SupplierInventory";
 import { SupplierOrders } from "@/components/supplier/SupplierOrders";
 import { SupplierAnalytics } from "@/components/supplier/SupplierAnalytics";
+import { SupplierSettings } from "@/components/supplier/SupplierSettings";
 
 const SupplierDashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [notifications, setNotifications] = useState(2); // Example notification count
+  const [notifications, setNotifications] = useState(2);
 
   return (
     <div className="container mx-auto py-8 px-4">
@@ -36,19 +37,11 @@ const SupplierDashboard = () => {
               </span>
             )}
           </Button>
-          <Button
-            variant="outline"
-            onClick={() => navigate("/supplier/settings")}
-            className="gap-2"
-          >
-            <Settings className="h-4 w-4" />
-            Settings
-          </Button>
         </div>
       </div>
       
       <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
           <TabsTrigger value="overview" className="gap-2">
             <Package className="h-4 w-4" />
             Overview
@@ -64,6 +57,10 @@ const SupplierDashboard = () => {
           <TabsTrigger value="analytics" className="gap-2">
             <TrendingUp className="h-4 w-4" />
             Analytics
+          </TabsTrigger>
+          <TabsTrigger value="settings" className="gap-2">
+            <Settings className="h-4 w-4" />
+            Business Info
           </TabsTrigger>
         </TabsList>
 
@@ -81,6 +78,10 @@ const SupplierDashboard = () => {
 
         <TabsContent value="analytics">
           <SupplierAnalytics />
+        </TabsContent>
+
+        <TabsContent value="settings">
+          <SupplierSettings />
         </TabsContent>
       </Tabs>
     </div>

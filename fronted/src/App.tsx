@@ -29,8 +29,13 @@ import SupplierDashboard from "./pages/supplier/SupplierDashboard";
 import SupplierProducts from "./pages/supplier/SupplierProducts";
 import PracticeSettings from "./pages/practice/PracticeSettings";
 import StaffManagement from "./pages/practice/StaffManagement";
-import Scheduling from "./pages/practice/Scheduling";
-import Training from "./pages/practice/Training";
+import StaffDirectory from "./pages/practice/staff/StaffDirectory";
+import RolesManagement from "./pages/practice/staff/RolesManagement";
+import PerformanceReviews from "./pages/practice/staff/PerformanceReviews";
+import Campaigns from "./pages/practice/marketing/Campaigns";
+import Reviews from "./pages/practice/marketing/Reviews";
+import SocialMedia from "./pages/practice/marketing/SocialMedia";
+import { SupplierSettings } from "./components/supplier/SupplierSettings";
 
 const queryClient = new QueryClient();
 
@@ -38,12 +43,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const userType = localStorage.getItem("userType");
   const isSignedIn = localStorage.getItem("isSignedIn") === "true";
 
-  // if (!isSignedIn) {
-  //   return <Navigate to="/auth/login" replace />;
-  // }
-
-  if (userType === "supplier") {
-    return <Navigate to="/supplier/dashboard" replace />;
+  if (!isSignedIn) {
+    return <Navigate to={`/auth/${userType || 'patient'}/login`} replace />;
   }
 
   return <>{children}</>;
@@ -60,13 +61,20 @@ const App = () => {
             <MainNav />
             <main className="flex-1 px-4 md:px-0">
               <Routes>
-                <Route path="/" element={
-                  <ProtectedRoute>
-                    <Index />
-                  </ProtectedRoute>
-                } />
-                <Route path="/auth/login" element={<Login />} />
-                <Route path="/auth/register" element={<Register />} />
+                <Route path="/" element={<Index />} />
+                
+                {/* Patient Auth Routes */}
+                <Route path="/auth/patient/login" element={<Login userType="patient" />} />
+                <Route path="/auth/patient/register" element={<Register userType="patient" />} />
+                
+                {/* Practice Auth Routes */}
+                <Route path="/auth/practice/login" element={<Login userType="practice" />} />
+                <Route path="/auth/practice/register" element={<Register userType="practice" />} />
+                
+                {/* Supplier Auth Routes */}
+                <Route path="/auth/supplier/login" element={<Login userType="supplier" />} />
+                <Route path="/auth/supplier/register" element={<Register userType="supplier" />} />
+                
                 <Route path="/practices/search" element={<Search />} />
                 <Route path="/practices/directory" element={<Directory />} />
                 <Route path="/practices/:id" element={<PracticeDetails />} />
@@ -84,19 +92,43 @@ const App = () => {
                 <Route path="/legal/cookie" element={<Cookie />} />
                 <Route path="/legal/terms" element={<Terms />} />
                 <Route path="/practice/materials" element={<MaterialsPractice />} />
+                <Route path="/patient/dashboard" element={
+                  <ProtectedRoute>
+                    <PatientDashboard />
+                  </ProtectedRoute>
+                } />
                 <Route path="/practice/inventory" element={<InventoryManagement />} />
                 <Route path="/practice/orders" element={<Orders />} />
                 <Route path="/practice/settings" element={<PracticeSettings />} />
                 <Route path="/practice/staff" element={<StaffManagement />} />
-                <Route path="/practice/scheduling" element={<Scheduling />} />
-                <Route path="/practice/training" element={<Training />} />
-                <Route path="/patient/dashboard" element={<PatientDashboard />} />
-                <Route path="/supplier/dashboard" element={<SupplierDashboard />} />
-                <Route path="/supplier/products" element={<SupplierProducts />} />
-                <Route path="/supplier/orders" element={<Orders />} />
-                <Route path="/supplier/analytics" element={<SupplierDashboard />} />
-                <Route path="/supplier/settings" element={<SupplierDashboard />} />
+                <Route path="/practice/staff/directory" element={<StaffDirectory />} />
+                <Route path="/practice/staff/roles" element={<RolesManagement />} />
+                <Route path="/practice/staff/reviews" element={<PerformanceReviews />} />
+                <Route path="/practice/marketing/campaigns" element={<Campaigns />} />
+                <Route path="/practice/marketing/reviews" element={<Reviews />} />
+                <Route path="/practice/marketing/social" element={<SocialMedia />} />
                 <Route path="/faqs" element={<FAQs />} />
+                
+                <Route path="/supplier/dashboard" element={
+                  <ProtectedRoute>
+                    <SupplierDashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/supplier/products" element={
+                  <ProtectedRoute>
+                    <SupplierProducts />
+                  </ProtectedRoute>
+                } />
+                <Route path="/supplier/orders" element={
+                  <ProtectedRoute>
+                    <Orders />
+                  </ProtectedRoute>
+                } />
+                <Route path="/supplier/analytics" element={
+                  <ProtectedRoute>
+                    <SupplierDashboard />
+                  </ProtectedRoute>
+                } />
               </Routes>
             </main>
             <Footer />

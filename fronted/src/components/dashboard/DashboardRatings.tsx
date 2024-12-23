@@ -20,7 +20,7 @@ export const DashboardRatings = ({ isOpen, onToggle }: DashboardRatingsProps) =>
             <Star className="h-5 w-5" />
             My Ratings
           </h2>
-          <p className="text-muted-foreground">View your ratings and reviews</p>
+          <p className="text-muted-foreground">View and manage your ratings and reviews</p>
         </div>
         <PrintToPdfButton targetRef={contentRef} filename="ratings" />
       </div>

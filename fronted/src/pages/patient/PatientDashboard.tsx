@@ -1,78 +1,57 @@
-import { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
+import { PatientDetailsForm } from "@/components/patient/PatientDetailsForm";
 import { DashboardRatings } from "@/components/dashboard/DashboardRatings";
 import { DashboardAppointments } from "@/components/dashboard/DashboardAppointments";
 import { DashboardHistory } from "@/components/dashboard/DashboardHistory";
 import { DashboardDocuments } from "@/components/dashboard/DashboardDocuments";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Star, Calendar, ClipboardList, FileText } from "lucide-react";
+import { User, Star, Calendar, ClipboardList, FileText } from "lucide-react";
 
-const treatmentHistory = [
+const mockTreatmentHistory = [
   {
     id: 1,
-    date: "2024-03-15",
-    treatment: "Regular Checkup",
-    doctor: "Dr. Sarah Smith",
-    cost: 150.00,
+    date: "2024-01-15",
+    treatment: "Dental Cleaning",
+    doctor: "Dr. Smith",
+    cost: 75.00,
     invoice: "INV-2024-001"
   },
   {
     id: 2,
-    date: "2024-02-01",
+    date: "2023-12-01",
     treatment: "Cavity Filling",
-    doctor: "Dr. John Davis",
-    cost: 300.00,
-    invoice: "INV-2024-002"
-  },
-  {
-    id: 3,
-    date: "2024-01-10",
-    treatment: "Teeth Cleaning",
-    doctor: "Dr. Sarah Smith",
-    cost: 120.00,
-    invoice: "INV-2024-003"
+    doctor: "Dr. Johnson",
+    cost: 150.00,
+    invoice: "INV-2023-089"
   }
 ];
 
-const documents = [
+const mockDocuments = [
   {
     id: 1,
-    name: "Treatment Plan - March 2024",
-    date: "2024-03-15",
-    type: "Treatment Plan"
-  },
-  {
-    id: 2,
-    name: "X-Ray Results",
-    date: "2024-02-01",
+    name: "Dental X-Ray Results",
+    date: "2024-01-15",
     type: "Medical Record"
   },
   {
-    id: 3,
-    name: "Invoice - February 2024",
-    date: "2024-02-01",
-    type: "Invoice"
+    id: 2,
+    name: "Treatment Plan",
+    date: "2023-12-01",
+    type: "Clinical Document"
   }
 ];
 
 const PatientDashboard = () => {
-  const { toast } = useToast();
-
-  const handleAppointmentSection = () => {
-    console.log('Sending email confirmation...');
-    toast({
-      title: "Confirmation Email Sent",
-      description: "Check your inbox for appointment details.",
-    });
-  };
-
   return (
     <div className="w-full min-h-screen bg-background">
       <div className="container mx-auto py-8 px-4">
         <h1 className="text-3xl font-bold mb-6">Patient Dashboard</h1>
         
-        <Tabs defaultValue="appointments" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+        <Tabs defaultValue="details" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="details" className="flex items-center gap-2">
+              <User className="h-4 w-4" />
+              Patient Details
+            </TabsTrigger>
             <TabsTrigger value="appointments" className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               Appointments
@@ -91,33 +70,31 @@ const PatientDashboard = () => {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="appointments" className="mt-6">
-            <DashboardAppointments 
-              isOpen={true} 
-              onToggle={handleAppointmentSection} 
-            />
+          <TabsContent value="details">
+            <PatientDetailsForm />
           </TabsContent>
 
-          <TabsContent value="history" className="mt-6">
+          <TabsContent value="appointments">
+            <DashboardAppointments isOpen={true} onToggle={() => {}} />
+          </TabsContent>
+
+          <TabsContent value="history">
             <DashboardHistory 
               isOpen={true} 
               onToggle={() => {}} 
-              treatmentHistory={treatmentHistory}
+              treatmentHistory={mockTreatmentHistory} 
             />
           </TabsContent>
 
-          <TabsContent value="ratings" className="mt-6">
-            <DashboardRatings 
-              isOpen={true} 
-              onToggle={() => {}} 
-            />
+          <TabsContent value="ratings">
+            <DashboardRatings isOpen={true} onToggle={() => {}} />
           </TabsContent>
 
-          <TabsContent value="documents" className="mt-6">
+          <TabsContent value="documents">
             <DashboardDocuments 
               isOpen={true} 
               onToggle={() => {}} 
-              documents={documents}
+              documents={mockDocuments} 
             />
           </TabsContent>
         </Tabs>

@@ -1,16 +1,17 @@
 import { Button } from "./ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Menu, X } from "lucide-react";
-import { NavLinks } from "./nav/NavLinks";
-import { AuthButtons } from "./nav/AuthButtons";
-import { MobileMenu } from "./nav/MobileMenu";
+import { DesktopNav } from "./nav/DesktopNav";
+import { MobileNav } from "./nav/MobileNav";
 
 export const MainNav = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [userType, setUserType] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -31,30 +32,61 @@ export const MainNav = () => {
     };
   }, []);
 
-  const handleSignOut = () => {
-    localStorage.removeItem("isSignedIn");
-    localStorage.removeItem("userType");
-    setIsSignedIn(false);
-    setUserType(null);
-    toast({
-      title: "Signed Out",
-      description: "You have been successfully signed out.",
-    });
-    window.dispatchEvent(new Event("authChange"));
+  const handleAuthAction = () => {
+    if (isSignedIn) {
+      localStorage.removeItem("isSignedIn");
+      localStorage.removeItem("userType");
+      setIsSignedIn(false);
+      setUserType(null);
+      navigate("/");
+      toast({
+        title: "Signed Out",
+        description: "You have been successfully signed out.",
+      });
+      window.dispatchEvent(new Event("authChange"));
+    } else {
+      // Default to patient login if no user type is set
+      const defaultUserType = location.pathname.includes('supplier') ? 'supplier' : 'patient';
+      navigate(`/auth/${defaultUserType}/login`);
+    }
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleProfileClick = () => {
+    switch(userType) {
+      case 'practice':
+        navigate('/practice/materials');
+        break;
+      case 'patient':
+        navigate('/patient/dashboard');
+        break;
+      case 'supplier':
+        navigate('/supplier/dashboard');
+        break;
+      default:
+        navigate('/auth/login');
+    }
   };
 
   return (
     <div className="border-b sticky top-0 bg-background z-50">
       <div className="flex h-16 items-center px-4 container mx-auto">
-        <Link to="/" className="mr-6 relative z-50">
-          <img src="/lovable-uploads/db0226bc-8c42-4c6a-90a4-477f2aef6434.png" alt="AlldentZ" className="h-8" />
+        <Link to="/" className="mr-auto md:mr-6 flex-shrink-0">
+          <img 
+            src="/lovable-uploads/db0226bc-8c42-4c6a-90a4-477f2aef6434.png" 
+            alt="AlldentZ" 
+            className="h-8 w-auto"
+          />
         </Link>
 
         <Button
           variant="ghost"
           size="icon"
-          className="ml-auto md:hidden"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="ml-2 md:hidden"
+          onClick={toggleMobileMenu}
         >
           {isMobileMenuOpen ? (
             <X className="h-6 w-6" />
@@ -63,21 +95,18 @@ export const MainNav = () => {
           )}
         </Button>
 
-        <div className="hidden md:flex ml-auto items-center space-x-4">
-          <NavLinks />
-          <AuthButtons 
-            isSignedIn={isSignedIn} 
-            userType={userType}
-            onSignOut={handleSignOut}
-          />
-        </div>
+        <DesktopNav 
+          isSignedIn={isSignedIn}
+          handleAuthAction={handleAuthAction}
+          handleProfileClick={handleProfileClick}
+        />
 
         {isMobileMenuOpen && (
-          <MobileMenu
+          <MobileNav 
             isSignedIn={isSignedIn}
-            userType={userType}
-            onSignOut={handleSignOut}
-            onClose={() => setIsMobileMenuOpen(false)}
+            handleAuthAction={handleAuthAction}
+            handleProfileClick={handleProfileClick}
+            toggleMobileMenu={toggleMobileMenu}
           />
         )}
       </div>

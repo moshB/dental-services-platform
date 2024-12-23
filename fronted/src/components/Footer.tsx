@@ -5,7 +5,7 @@ export const Footer = () => {
   return (
     <footer className="bg-gray-50 mt-auto">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <img 
               src="/lovable-uploads/db0226bc-8c42-4c6a-90a4-477f2aef6434.png" 
@@ -13,8 +13,16 @@ export const Footer = () => {
               className="h-8 w-auto"
             />
             <p className="text-sm text-muted-foreground">
-              A better Dental Market for patients and practitioners
+              Creating a Better Dental Market
             </p>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="font-semibold">Company</h4>
+            <ul className="space-y-2">
+              <li><Link to="/about" className="text-sm text-muted-foreground hover:text-primary">About Us</Link></li>
+              <li><Link to="/faqs" className="text-sm text-muted-foreground hover:text-primary">FAQs</Link></li>
+            </ul>
           </div>
 
           <div className="space-y-4">
@@ -22,15 +30,14 @@ export const Footer = () => {
             <ul className="space-y-2">
               <li><Link to="/practices/search" className="text-sm text-muted-foreground hover:text-primary">Advanced Search</Link></li>
               <li><Link to="/practices/directory" className="text-sm text-muted-foreground hover:text-primary">Directory</Link></li>
+              <li><Link to="/practice/portal" className="text-sm text-muted-foreground hover:text-primary">Practice Portal</Link></li>
             </ul>
           </div>
 
           <div className="space-y-4">
-            <h4 className="font-semibold">Resources</h4>
+            <h4 className="font-semibold">Suppliers</h4>
             <ul className="space-y-2">
-              <li><Link to="/about" className="text-sm text-muted-foreground hover:text-primary">About Us</Link></li>
-              <li><Link to="/data/insights" className="text-sm text-muted-foreground hover:text-primary">Dental Data</Link></li>
-              <li><Link to="/faqs" className="text-sm text-muted-foreground hover:text-primary">FAQs</Link></li>
+              <li><Link to="/auth/supplier/login" className="text-sm text-muted-foreground hover:text-primary">Become a Supplier</Link></li>
             </ul>
           </div>
         </div>

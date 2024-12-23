@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { User, Megaphone, Package2, Settings, Users } from "lucide-react";
+import { User, Megaphone, Package2, Settings, Users, Rocket, Star, Share2 } from "lucide-react";
 import { StaffingTab } from "@/components/practice/StaffingTab";
 import { CatalogSection } from "@/components/practice/CatalogSection";
 
@@ -70,21 +70,36 @@ const MaterialsPractice = () => {
         <TabsContent value="marketing" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Campaigns</h2>
+              <div className="flex items-center gap-2 mb-4">
+                <Rocket className="h-5 w-5 text-primary" />
+                <h2 className="text-xl font-semibold">Campaigns</h2>
+              </div>
               <p className="text-muted-foreground mb-4">Manage marketing campaigns</p>
-              <Button className="w-full">View Campaigns</Button>
+              <Button className="w-full" onClick={() => navigate("/practice/marketing/campaigns")}>
+                View Campaigns
+              </Button>
             </Card>
 
             <Card className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Patient Reviews</h2>
+              <div className="flex items-center gap-2 mb-4">
+                <Star className="h-5 w-5 text-primary" />
+                <h2 className="text-xl font-semibold">Reviews</h2>
+              </div>
               <p className="text-muted-foreground mb-4">Monitor and respond to reviews</p>
-              <Button className="w-full">Manage Reviews</Button>
+              <Button className="w-full" onClick={() => navigate("/practice/marketing/reviews")}>
+                Manage Reviews
+              </Button>
             </Card>
 
             <Card className="p-6">
-              <h2 className="text-xl font-semibold mb-4">Social Media</h2>
+              <div className="flex items-center gap-2 mb-4">
+                <Share2 className="h-5 w-5 text-primary" />
+                <h2 className="text-xl font-semibold">Social Media</h2>
+              </div>
               <p className="text-muted-foreground mb-4">Social media management</p>
-              <Button className="w-full">View Social</Button>
+              <Button className="w-full" onClick={() => navigate("/practice/marketing/social")}>
+                View Social
+              </Button>
             </Card>
           </div>
         </TabsContent>

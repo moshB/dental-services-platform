@@ -9,15 +9,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Package } from "lucide-react";
+import { Package, Eye } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { TableFilter } from "./TableFilter";
 import { TableDownloadButtons } from "./TableDownloadButtons";
 import { useToast } from "@/hooks/use-toast";
+import { OrderDetailsModal } from "./OrderDetailsModal";
 
 const initialOrders = [
   {
     id: "ORD-001",
     practice: "Smile Dental Clinic",
+    practiceAddress: "123 Dental Street, London",
+    dentistName: "Dr. Sarah Smith",
     date: "2024-02-20",
     items: ["Dental Mirrors", "Disposable Gloves"],
     status: "Pending",
@@ -26,6 +30,8 @@ const initialOrders = [
   {
     id: "ORD-002",
     practice: "Bright Dental Care",
+    practiceAddress: "456 Bright Avenue, Manchester",
+    dentistName: "Dr. John Brown",
     date: "2024-02-19",
     items: ["Composite Filling Material", "Dental Burs"],
     status: "Processing",
@@ -36,9 +42,10 @@ const initialOrders = [
 export const SupplierOrders = () => {
   const [filterValue, setFilterValue] = useState("");
   const [orders, setOrders] = useState(initialOrders);
+  const [selectedOrder, setSelectedOrder] = useState<typeof initialOrders[0] | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const tableRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const previousOrdersLength = useRef(orders.length);
 
   useEffect(() => {
     // Simulate receiving a new order every 30 seconds
@@ -46,6 +53,8 @@ export const SupplierOrders = () => {
       const newOrder = {
         id: `ORD-00${orders.length + 1}`,
         practice: "New Dental Practice",
+        practiceAddress: "789 New Street, Birmingham",
+        dentistName: "Dr. New Doctor",
         date: new Date().toISOString().split('T')[0],
         items: ["New Item"],
         status: "Pending",
@@ -68,6 +77,11 @@ export const SupplierOrders = () => {
       value.toString().toLowerCase().includes(filterValue.toLowerCase())
     )
   );
+
+  const handleViewDetails = (order: typeof initialOrders[0]) => {
+    setSelectedOrder(order);
+    setIsModalOpen(true);
+  };
 
   return (
     <Card className="p-6">
@@ -95,10 +109,13 @@ export const SupplierOrders = () => {
               <TableRow>
                 <TableHead>Order ID</TableHead>
                 <TableHead>Practice</TableHead>
+                <TableHead>Address</TableHead>
+                <TableHead>Dentist</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead>Items</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right">Total</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -106,6 +123,8 @@ export const SupplierOrders = () => {
                 <TableRow key={order.id}>
                   <TableCell className="font-medium">{order.id}</TableCell>
                   <TableCell>{order.practice}</TableCell>
+                  <TableCell>{order.practiceAddress}</TableCell>
+                  <TableCell>{order.dentistName}</TableCell>
                   <TableCell>{order.date}</TableCell>
                   <TableCell>{order.items.join(", ")}</TableCell>
                   <TableCell>
@@ -114,12 +133,27 @@ export const SupplierOrders = () => {
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">£{order.total.toFixed(2)}</TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleViewDetails(order)}
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </div>
       </div>
+
+      <OrderDetailsModal
+        order={selectedOrder}
+        open={isModalOpen}
+        onOpenChange={setIsModalOpen}
+      />
     </Card>
   );
 };
