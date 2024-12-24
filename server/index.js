@@ -39,11 +39,13 @@ app.use(express.static(path.join(__dirname, 'client/dist')));
 
 // נתיב ראשי להגשת ה-Frontend עבור כל נתיב שלא נמצא
 app.get('*', (req, res) => {
+  console.log("Static files served from:", path.join(__dirname, '../client/dist'));
   res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
 });
 
 // Middleware לטיפול בשגיאות
 app.use((err, req, res, next) => {
+  console.log("qwerty");
   console.error(err.stack);
   res.status(500).send({ message: "Something went wrong!" });
 });
