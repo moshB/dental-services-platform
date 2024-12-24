@@ -47,7 +47,7 @@ app.get('*', (req, res) => {
 app.use((err, req, res, next) => {
   console.log("qwerty");
   console.error(err.stack);
-  res.status(500).send({ message: "Something went wrong!" });
+  res.status(500).send({ message: "Something went wrong!s" });
 });
 
 // הפעלת השרת
