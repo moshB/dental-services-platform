@@ -16,7 +16,7 @@ all-dentals-hub/
 all-dentals-hub
 node_modules
 # dist
-# dist-ssr
+dist-ssr
 *.local
 
 # Editor directories and files
@@ -30,8 +30,8 @@ node_modules
 *.sln
 *.sw?
 # Ignore build directories except client/dist
-dist-ssr
-*.local
-!.gitignore
-!client/dist/
+# dist-ssr
+# *.local
+# !.gitignore
+# !client/dist/
 
