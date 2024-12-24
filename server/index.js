@@ -40,7 +40,7 @@ app.use(express.static(path.join(__dirname, 'client/dist')));
 // נתיב ראשי להגשת ה-Frontend עבור כל נתיב שלא נמצא
 app.get('*', (req, res) => {
   console.log("Static files served from:", path.join(__dirname, '../client/dist'));
-  res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'client/dist', 'index.html'));
 });
 
 // Middleware לטיפול בשגיאות
