@@ -1,19 +1,28 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path'); // משמש להגשת קבצים סטטיים
+const dotenv = require('dotenv');
 const clinicsRoutes = require('./routes/clinicsRoutes');
+
+// טען משתני סביבה מקובץ .env
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000; // שימוש ב-PORT מ-Heroku
 
-// אפשר CORS לדומיינים הרצויים
+// הגדרת CORS
+const allowedOrigins = ["https://lovable.dev", "https://dental-services-platform.netlify.app"];
+if (process.env.NODE_ENV === "development") {
+  allowedOrigins.push("http://localhost");
+}
+
 app.use(cors({
-  origin: ["https://lovable.dev", "https://dental-services-platform.netlify.app", "http://localhost"], // רשימת דומיינים מאושרים
-  methods: ["GET", "POST", "PUT", "DELETE"], // מתודות מאושרות
-  credentials: true // אם נדרש לשלוח קוקיז או אישורים
+  origin: allowedOrigins,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true, // מאפשר שליחת cookies
 }));
 
-// כדי לקרוא נתוני JSON שנשלחים לשרת
+// Middleware לקריאת נתוני JSON שנשלחים לשרת
 app.use(express.json());
 
 // נתיבים ל-API
@@ -25,6 +34,12 @@ app.use(express.static(path.join(__dirname, '../fronted/build')));
 // נתיב ראשי להגשת ה-Frontend עבור כל נתיב שלא נמצא
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../fronted/build', 'index.html'));
+});
+
+// Middleware לטיפול בשגיאות
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send({ message: "Something went wrong!" });
 });
 
 // הפעלת השרת
