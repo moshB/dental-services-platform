@@ -67,7 +67,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // הגדרת CORS
-const allowedOrigins = ["https://lovable.dev", "https://dental-services-platform.netlify.app"];
+const allowedOrigins = ["https://lovable.dev","https://polar-fjord-74717-41c63b3e90ed.herokuapp.com/", "https://dental-services-platform.netlify.app"];
 if (process.env.NODE_ENV === "development") {
   allowedOrigins.push("http://localhost");
 }
