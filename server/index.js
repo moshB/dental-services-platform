@@ -29,11 +29,11 @@ app.use(express.json());
 app.use('/api/clinics', clinicsRoutes);
 
 // הגשת צד הלקוח (Frontend)
-app.use(express.static(path.join(__dirname, '../fronted/build')));
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 // נתיב ראשי להגשת ה-Frontend עבור כל נתיב שלא נמצא
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../fronted/build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
 });
 
 // Middleware לטיפול בשגיאות
