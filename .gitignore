@@ -15,8 +15,8 @@ client/.env
 all-dentals-hub/
 all-dentals-hub
 node_modules
-dist
-dist-ssr
+# dist
+# dist-ssr
 *.local
 
 # Editor directories and files
