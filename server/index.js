@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path'); // משמש להגשת קבצים סטטיים
 const dotenv = require('dotenv');
+// require('dotenv').config();
+
 const clinicsRoutes = require('./routes/clinicsRoutes');
 
 // טען משתני סביבה מקובץ .env
