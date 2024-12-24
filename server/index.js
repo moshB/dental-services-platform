@@ -87,9 +87,9 @@ const clientBuildPath = path.join(__dirname, '../client/dist');
 app.use(express.static(clientBuildPath));
 
 // נתיב ראשי להגשת ה-Frontend עבור כל נתיב שלא נמצא
-app.get('*', (req, res) => {
-  res.sendFile(path.join(clientBuildPath, 'index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(clientBuildPath, 'index.html'));
+// });
 
 // Middleware לטיפול בשגיאות
 app.use((err, req, res, next) => {
