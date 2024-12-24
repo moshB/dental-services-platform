@@ -29,4 +29,9 @@ node_modules
 *.njsproj
 *.sln
 *.sw?
+# Ignore build directories except client/dist
+dist-ssr
+*.local
+!.gitignore
+!client/dist/
 
