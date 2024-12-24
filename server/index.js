@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path'); // משמש להגשת קבצים סטטיים
 const clinicsRoutes = require('./routes/clinicsRoutes');
 
 const app = express();
@@ -15,9 +16,18 @@ app.use(cors({
 // כדי לקרוא נתוני JSON שנשלחים לשרת
 app.use(express.json());
 
-// נתיבים
+// נתיבים ל-API
 app.use('/api/clinics', clinicsRoutes);
 
-// נתיב ראשי לבדיקה
-app.get('/', (req, res) => {
-  res.send({ mes
+// הגשת צד הלקוח (Frontend)
+app.use(express.static(path.join(__dirname, '../fronted/build')));
+
+// נתיב ראשי להגשת ה-Frontend עבור כל נתיב שלא נמצא
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../fronted/build', 'index.html'));
+});
+
+// הפעלת השרת
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
