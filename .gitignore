@@ -9,7 +9,9 @@ lerna-debug.log*
 node_modules/
 .env
 frontend/node_modules/
+client/node_modules/
 frontend/.env
+client/.env
 all-dentals-hub/
 all-dentals-hub
 node_modules
