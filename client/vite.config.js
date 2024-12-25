@@ -59,7 +59,10 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  
   define: {
-    'import.meta.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL || 'http://localhost:5000/api'),
+    'import.meta.env.VITE_API_URL': JSON.stringify(
+      process.env.VITE_API_URL || (mode === 'production' ? 'https://polar-fjord-74717-41c63b3e90ed.herokuapp.com/api' : 'http://localhost:5000/api')
+    ),
   },
 }));
