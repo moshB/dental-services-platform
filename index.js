@@ -27,7 +27,7 @@ app.use(express.json());
 app.use('/api/clinics', clinicsRoutes);
 
 // הגשת צד הלקוח (Frontend)
-const clientBuildPath = path.join(__dirname, 'client/dist');
+const clientBuildPath = path.join(__dirname, './client/dist');
 app.use(express.static(clientBuildPath));
 
 // נתיב ראשי להגשת ה-Frontend עבור כל נתיב שלא נמצא
