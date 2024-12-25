@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
-    "node": "18.x"
+    "node": ">=18.x"
   },
   "keywords": [],
   "author": "",
@@ -19,10 +19,6 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react-swc": "^3.0.0",
-    "lovable-tagger": "^1.0.19",
-    "vite": "^6.0.5"
   }
+
 }
