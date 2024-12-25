@@ -6,8 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "heroku-postbuild": "echo 'Skipping build step as dist is already built'"
-},
-
+  },
   "engines": {
     "node": "20.x"
   },

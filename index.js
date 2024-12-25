@@ -11,7 +11,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // הגדרת CORS
-const allowedOrigins = ["http://localhost","https://lovable.dev","polar-fjord-74717-41c63b3e90ed.herokuapp.com","https://polar-fjord-74717-41c63b3e90ed.herokuapp.com", "https://dental-services-platform.netlify.app"];
+const allowedOrigins = ["http://localhost:8080","https://lovable.dev","polar-fjord-74717-41c63b3e90ed.herokuapp.com","https://polar-fjord-74717-41c63b3e90ed.herokuapp.com", "https://dental-services-platform.netlify.app"];
 // if (process.env.NODE_ENV === "development") {
 //   allowedOrigins.push("http://localhost");
 // }

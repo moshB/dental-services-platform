@@ -112,11 +112,14 @@ const Search = () => {
 
   const fetchClinics = async () => {
     setLoading(true);
-
+    console.log(treatment, userLatitude, userLongitude);
+    // const API_URL = process.env.API_URL;
+    const API_URL = import.meta.env.VITE_API_URL;
+    console.log(API_URL);
     try {
-      // const response = await fetch("http://localhost:5000/api/clinics/search", {
-        const response = await fetch("https://dental-services-platform.netlify.app:5000/api/clinics/search", {
-
+        const response = await fetch(`${API_URL}/clinics/search`, {
+        // const response = await fetch(`${process.env.REACT_APP_API_URL}/clinics/search`, {
+      //   const response = await fetch("https://dental-services-platform.netlify.app:5000/api/clinics/search", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -125,7 +128,7 @@ const Search = () => {
           service: treatment,
           latitude: userLatitude,
           longitude: userLongitude,
-          radius: 3000, // Default radius in kilometers
+          radius: 30000, // Default radius in kilometers
         }),
       });
 
@@ -149,7 +152,7 @@ const Search = () => {
 
   useEffect(() => {
     if (latitude && longitude && treatment) {
-      // fetchClinics();
+      fetchClinics();
     }
   }, [latitude, longitude, treatment]);
 
