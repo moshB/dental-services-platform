@@ -110,42 +110,42 @@ const Search = () => {
   //   }
   // };
 
-  // const fetchClinics = async () => {
-  //   setLoading(true);
+  const fetchClinics = async () => {
+    setLoading(true);
 
-  //   try {
-  //     // const response = await fetch("http://localhost:5000/api/clinics/search", {
-  //       const response = await fetch("https://dental-services-platform.netlify.app:5000/api/clinics/search", {
+    try {
+      // const response = await fetch("http://localhost:5000/api/clinics/search", {
+        const response = await fetch("https://dental-services-platform.netlify.app:5000/api/clinics/search", {
 
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         service: treatment,
-  //         latitude: userLatitude,
-  //         longitude: userLongitude,
-  //         radius: 3000, // Default radius in kilometers
-  //       }),
-  //     });
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          service: treatment,
+          latitude: userLatitude,
+          longitude: userLongitude,
+          radius: 3000, // Default radius in kilometers
+        }),
+      });
 
 
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch clinics");
-  //     }
+      if (!response.ok) {
+        throw new Error("Failed to fetch clinics");
+      }
 
-  //     const data = await response.json();
-  //     if (data.length === 0) {
-  //       console.warn("No clinics found");
-  //     }
-  //     const processedData = createDentalPracticesArray(data, latitude, longitude);
-  //     setPractices(processedData);
-  //   } catch (error) {
-  //     console.error("Error fetching clinics:", error.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+      const data = await response.json();
+      if (data.length === 0) {
+        console.warn("No clinics found");
+      }
+      const processedData = createDentalPracticesArray(data, latitude, longitude);
+      setPractices(processedData);
+    } catch (error) {
+      console.error("Error fetching clinics:", error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (latitude && longitude && treatment) {
