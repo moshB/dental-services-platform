@@ -325,7 +325,7 @@ export const SearchBar = () => {
 
   return (
     <div className="flex flex-col lg:flex-row gap-4 w-full max-w-4xl mx-auto bg-white/80 backdrop-blur-lg p-4 rounded-xl shadow-lg">
-      {/* <div className="relative flex-[1.5]">
+      <div className="relative flex-[1.5]">
         <Popover open={locationOpen} onOpenChange={setLocationOpen}>
           <PopoverTrigger asChild>
             <div className="relative">
@@ -339,7 +339,7 @@ export const SearchBar = () => {
             </div>
           </PopoverTrigger>
         </Popover>
-      </div> */}
+      </div>
 
       <TreatmentSelect
         value={treatment}
