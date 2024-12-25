@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Upload, FileUp, Plus, Package, FileSpreadsheet } from "lucide-react";
-import * as XLSX from 'xlsx';
+// import * as XLSX from 'xlsx';
 import {
   Table,
   TableBody,
@@ -30,41 +30,41 @@ export const ProductUpload = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const { toast } = useToast();
 
-  const handleExcelUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+  // const handleExcelUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   if (!file) return;
 
-    try {
-      const data = await file.arrayBuffer();
-      const workbook = XLSX.read(data);
-      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      const jsonData = XLSX.utils.sheet_to_json(worksheet);
+  //   try {
+  //     const data = await file.arrayBuffer();
+  //     const workbook = XLSX.read(data);
+  //     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+  //     const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
-      const newProducts: Product[] = jsonData.map((row: any, index) => ({
-        id: `product-${index}`,
-        name: row.name || row.Name || '',
-        price: parseFloat(row.price || row.Price || 0),
-        category: row.category || row.Category || '',
-        sku: row.sku || row.SKU || '',
-        stock: parseInt(row.stock || row.Stock || 0),
-        description: row.description || row.Description || '',
-        imageUrl: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=300&auto=format&fit=crop"
-      }));
+  //     const newProducts: Product[] = jsonData.map((row: any, index) => ({
+  //       id: `product-${index}`,
+  //       name: row.name || row.Name || '',
+  //       price: parseFloat(row.price || row.Price || 0),
+  //       category: row.category || row.Category || '',
+  //       sku: row.sku || row.SKU || '',
+  //       stock: parseInt(row.stock || row.Stock || 0),
+  //       description: row.description || row.Description || '',
+  //       imageUrl: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&h=300&auto=format&fit=crop"
+  //     }));
 
-      setProducts([...products, ...newProducts]);
+  //     setProducts([...products, ...newProducts]);
       
-      toast({
-        title: "Products imported",
-        description: `Successfully imported ${newProducts.length} products from Excel.`,
-      });
-    } catch (error) {
-      toast({
-        title: "Import failed",
-        description: "Failed to import products. Please check your Excel file format.",
-        variant: "destructive",
-      });
-    }
-  };
+  //     toast({
+  //       title: "Products imported",
+  //       description: `Successfully imported ${newProducts.length} products from Excel.`,
+  //     });
+  //   } catch (error) {
+  //     toast({
+  //       title: "Import failed",
+  //       description: "Failed to import products. Please check your Excel file format.",
+  //       variant: "destructive",
+  //     });
+  //   }
+  // };
 
   const handleCSVUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -116,7 +116,7 @@ export const ProductUpload = () => {
   };
 
   const downloadTemplate = () => {
-    const template = XLSX.utils.book_new();
+    // const template = XLSX.utils.book_new();
     const templateData = [
       {
         Name: 'Example Product',
@@ -128,9 +128,9 @@ export const ProductUpload = () => {
       }
     ];
     
-    const ws = XLSX.utils.json_to_sheet(templateData);
-    XLSX.utils.book_append_sheet(template, ws, "Template");
-    XLSX.writeFile(template, "product_upload_template.xlsx");
+    // const ws = XLSX.utils.json_to_sheet(templateData);
+    // XLSX.utils.book_append_sheet(template, ws, "Template");
+    // XLSX.writeFile(template, "product_upload_template.xlsx");
   };
 
   return (
@@ -149,8 +149,8 @@ export const ProductUpload = () => {
                 <Input
                   id="excel-upload"
                   type="file"
-                  accept=".xlsx,.xls"
-                  onChange={handleExcelUpload}
+                  // accept=".xlsx,.xls"
+                  // onChange={handleExcelUpload}
                   className="cursor-pointer"
                 />
                 <Button
