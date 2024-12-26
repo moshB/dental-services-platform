@@ -102,6 +102,38 @@ const searchClinicsWithRadius = async (req, res) => {
     }
 };
 
+// Get clinic by ID
+const getClinicById = async (req, res) => {
+    const { id } = req.body; // ID will be provided as a route parameter
+
+    try {
+        console.log(`Fetching clinic with ID: ${id}`);
+
+        // Fetch clinic data from Supabase
+        const { data, error } = await supabase
+            .from('clinics')
+            .select()
+            .eq('id', id) // Filter by the provided ID
+            .single(); // Ensure only one record is fetched
+
+        if (error) {
+            console.error('Supabase error:', error);
+            return res.status(500).json({ error: error.message });
+        }
+
+        if (!data) {
+            return res.status(404).json({ error: 'Clinic not found' });
+        }
+
+        console.log('Clinic Data:', data);
+        res.json(data);
+    } catch (err) {
+        console.error('Error fetching clinic:', err.message);
+        res.status(500).json({ error: err.message });
+    }
+};
+
 module.exports = {
     searchClinicsWithRadius,
+    getClinicById, // Export the new function
 };
