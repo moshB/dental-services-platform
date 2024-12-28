@@ -8,4 +8,7 @@ router.post('/search', searchClinicsWithRadius);
 router.post('/details', getClinicById);
 
 
+
+
+
 module.exports = router;
