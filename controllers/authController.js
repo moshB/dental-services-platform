@@ -5,14 +5,14 @@ const handleUserSignup = async (req, res) => {
         email,
         password,
         full_name,
-        // date_of_birth,
-        // phone,
-        // address,
-        // nhs_number,
-        // medical_history,
-        // dental_history,
-        // allergies,
-        // medications,
+        date_of_birth,
+        phone,
+        address,
+        nhs_number,
+        medical_history,
+        dental_history,
+        allergies,
+        medications,
     } = req.body;
 
     try {
@@ -33,14 +33,14 @@ const handleUserSignup = async (req, res) => {
                 id: user.user.id, // חובה - המפתח הראשי
                 email, // אימייל של המשתמש
                 full_name: full_name || null, // שם מלא
-                // date_of_birth: date_of_birth || null, // תאריך לידה
-                // phone: phone || null, // טלפון
-                // address: address || null, // כתובת
-                // nhs_number: nhs_number || null, // מספר NHS
-                // medical_history: medical_history || null, // היסטוריה רפואית
-                // dental_history: dental_history || null, // היסטוריה דנטלית
-                // allergies: allergies || null, // אלרגיות
-                // medications: medications || null, // תרופות
+                date_of_birth: date_of_birth || null, // תאריך לידה
+                phone: phone || null, // טלפון
+                address: address || null, // כתובת
+                nhs_number: nhs_number || null, // מספר NHS
+                medical_history: medical_history || null, // היסטוריה רפואית
+                dental_history: dental_history || null, // היסטוריה דנטלית
+                allergies: allergies || null, // אלרגיות
+                medications: medications || null, // תרופות
                 created_at: new Date(), // תאריך יצירה
                 updated_at: new Date(), // תאריך עדכון
             });

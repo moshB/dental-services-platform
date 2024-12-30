@@ -1,3 +1,4 @@
+import { SearchBar } from "@/components/SearchBar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { MapPin, Star, Clock } from "lucide-react";
@@ -88,18 +89,18 @@ const Search = () => {
   // const fetchClinics = async () => {
   //   setLoading(true);
 
-    // try {
-    //   // קריאה לפונקציה החדשה
-    //   const data = await searchClinicsWithRadius(
-    //     treatment,
-    //     userLatitude,
-    //     userLongitude,
-    //     3000 // רדיוס ברירת מחדל בקילומטרים
-    //   );
+  // try {
+  //   // קריאה לפונקציה החדשה
+  //   const data = await searchClinicsWithRadius(
+  //     treatment,
+  //     userLatitude,
+  //     userLongitude,
+  //     3000 // רדיוס ברירת מחדל בקילומטרים
+  //   );
 
-      // if (data.length === 0) {
-      //   console.warn('No clinics found');
-      // }
+  // if (data.length === 0) {
+  //   console.warn('No clinics found');
+  // }
 
   //     const processedData = createDentalPracticesArray(data, userLatitude, userLongitude);
   //     setPractices(processedData);
@@ -117,9 +118,9 @@ const Search = () => {
     const API_URL = import.meta.env.VITE_API_URL;
     console.log(API_URL);
     try {
-        const response = await fetch(`${API_URL}/clinics/search`, {
+      const response = await fetch(`${API_URL}/clinics/search`, {
         // const response = await fetch(`${process.env.REACT_APP_API_URL}/clinics/search`, {
-      //   const response = await fetch("https://dental-services-platform.netlify.app:5000/api/clinics/search", {
+        //   const response = await fetch("https://dental-services-platform.netlify.app:5000/api/clinics/search", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -163,16 +164,35 @@ const Search = () => {
   };
 
   return (
+
     <div className="container mx-auto py-6">
+      {/* <div className="relative overflow-hidden bg-gradient-to-r from-[#243949] to-[#517fa4] py-6">
+        <div className="absolute inset-0 bg-black/20" />
+        <div className="relative container mx-auto text-center space-y-6 max-w-3xl">
+          <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+            Find Your Perfect Dental Care
+          </h1>
+          <p className="text-xl text-white/90 max-w-2xl mx-auto">
+            Search through thousands of trusted dental practices and procedures to find the perfect match for your needs in the UK
+          </p> */}
+      <div className="relative container mx-auto text-center space-y-6 max-w-3xl">
+        <div className="max-w-2xl mx-auto bg-white/10 p-4 rounded-lg backdrop-blur-sm py-6">
+          <SearchBar />
+        </div>
+      </div>
+      {/* // </div> */}
+
+
+
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <FilterAccordion onRatingChange={handleRatingChange} />
 
         <div className="md:col-span-3 space-y-4">
           <div className="flex justify-between items-center mb-4">
-            <h1>Search Results</h1>
+            {/* <h1>Search Results</h1>
             <p>Latitude: {latitude}</p>
             <p>Longitude: {longitude}</p>
-            <p>Treatment: {treatment}</p>
+            <p>Treatment: {treatment}</p> */}
             <h2 className="text-xl font-semibold">{filteredPractices.length} practices found</h2>
             <Select defaultValue="proximity">
               <SelectTrigger className="w-[180px]">
