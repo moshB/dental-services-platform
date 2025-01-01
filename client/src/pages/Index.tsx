@@ -47,14 +47,14 @@ const Index = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-r from-[#243949] to-[#517fa4] py-20 px-6">
         <div className="absolute inset-0 bg-black/20" />
-        <div className="relative container mx-auto text-center space-y-6 max-w-3xl">
+        <div className="relative container mx-auto text-center space-y-6 max-w-6xl">
           <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight">
             Find Your Perfect Dental Care
           </h1>
           <p className="text-xl text-white/90 max-w-2xl mx-auto">
             Search through thousands of trusted dental practices and procedures to find the perfect match for your needs in the UK
           </p>
-          <div className="max-w-2xl mx-auto bg-white/10 p-4 rounded-lg backdrop-blur-sm">
+          <div className="max-w-4xl mx-auto bg-white/10 p-4 rounded-lg backdrop-blur-sm">
             <SearchBar />
           </div>
         </div>

@@ -78,7 +78,8 @@ const Search = () => {
 
   const location = useLocation();
   const { state } = location || {};
-  const { latitude, longitude, treatment } = state || {};
+  // const { latitude, longitude, treatment } = state || {};
+  const { latitude, longitude, treatment, clinicName } = state || {};
 
   // TODO: For testing purposes, using fixed coordinates for Birmingham
   // const testLatitude = 52.479699;
@@ -126,10 +127,11 @@ const Search = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          service: treatment,
-          latitude: userLatitude,
-          longitude: userLongitude,
-          radius: 30000, // Default radius in kilometers
+          service: treatment|| null,
+          latitude: userLatitude|| null,
+          longitude: userLongitude|| null,
+          radius: 1000, // Default radius in kilometers
+          clinicName: clinicName || null,
         }),
       });
 
@@ -152,7 +154,7 @@ const Search = () => {
   };
 
   useEffect(() => {
-    if (latitude && longitude && treatment) {
+    if (latitude && longitude && treatment || clinicName) {
       fetchClinics();
     }
   }, [latitude, longitude, treatment]);
@@ -166,17 +168,9 @@ const Search = () => {
   return (
 
     <div className="container mx-auto py-6">
-      {/* <div className="relative overflow-hidden bg-gradient-to-r from-[#243949] to-[#517fa4] py-6">
-        <div className="absolute inset-0 bg-black/20" />
-        <div className="relative container mx-auto text-center space-y-6 max-w-3xl">
-          <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight">
-            Find Your Perfect Dental Care
-          </h1>
-          <p className="text-xl text-white/90 max-w-2xl mx-auto">
-            Search through thousands of trusted dental practices and procedures to find the perfect match for your needs in the UK
-          </p> */}
-      <div className="relative container mx-auto text-center space-y-6 max-w-3xl">
-        <div className="max-w-2xl mx-auto bg-white/10 p-4 rounded-lg backdrop-blur-sm py-6">
+      
+      <div className="relative container mx-auto text-center space-y-6 max-w-6xl">
+        <div className="max-w-4xl mx-auto bg-white/10 p-4 rounded-lg backdrop-blur-sm py-6">
           <SearchBar />
         </div>
       </div>

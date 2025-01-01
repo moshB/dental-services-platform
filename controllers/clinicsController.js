@@ -66,41 +66,173 @@
 // };
 const supabase = require('../supabaseClient');
 
+// const searchClinicsWithRadius = async (req, res) => {
+//     const { service, latitude, longitude, radius, clinicName } = req.body;
+
+//     if (clinicName) {
+//         try {
+//             console.log(`Fetching clinic with ID: ${id}`);
+
+//             // Fetch clinic data from Supabase
+//             const { data, error } = await supabase
+//                 .from('clinics')
+//                 .select()
+//                 .eq('Name', clinicName) // Filter by the provided ID
+//                 .single(); // Ensure only one record is fetched
+
+//             if (error) {
+//                 console.error('Supabase error:', error);
+//                 return res.status(500).json({ error: error.message });
+//             }
+
+//             if (!data) {
+//                 return res.status(404).json({ error: 'Clinic not found' });
+//             }
+
+//             console.log('Clinic Data:', data);
+
+
+
+//             res.json(data);
+//         } catch (err) {
+//             console.error('Error fetching clinic:', err.message);
+//             res.status(500).json({ error: err.message });
+//         }
+
+//     }
+
+//     try {
+//         console.log('Starting search with radius filter...');
+
+//         // Earth radius in kilometers
+//         const R = 6371;
+
+//         // Properly reference the column names matching the database
+//         const { data, error } = await supabase
+//             .from('clinics')
+//             .select()
+//             .ilike('"Dentist_Type"', `%${service}%`) // Ensuring exact match with column name
+
+//             // Latitude filter
+//             .filter('Latitude', 'gte', latitude - (radius / R))
+//             .filter('Latitude', 'lte', latitude + (radius / R))
+
+//             // Longitude filter
+//             .filter('Longitude', 'gte', longitude - (radius / (R * Math.cos(latitude * Math.PI / 180))))
+//             .filter('Longitude', 'lte', longitude + (radius / (R * Math.cos(latitude * Math.PI / 180))));
+
+//         if (error) {
+//             console.error('Supabase error:', error);
+//             return res.status(500).json({ error: error.message });
+//         }
+
+//         console.log('Filtered Data from Supabase:', data);
+//         res.json(data);
+//     } catch (err) {
+//         console.error('Error during search:', err.message);
+//         res.status(500).json({ error: err.message });
+//     }
+// };
+
+
+
 const searchClinicsWithRadius = async (req, res) => {
-    const { service, latitude, longitude, radius } = req.body;
+    const { service, latitude, longitude, radius = 10, clinicName } = req.body;
 
+    if (!latitude || !longitude && !clinicName) {
+        return res.status(400).json({ error: "Latitude and Longitude are required." });
+    }
+
+    if (clinicName) {
+        // Case 1: Clinic name provided
+        try {
+            console.log(`Fetching clinic with Name: ${clinicName}`);
+
+            // Fetch clinic data from Supabase
+            const { data: clinicData, error: clinicError } = await supabase
+                .from('clinics')
+                // .select('Latitude, Longitude, Dentist_Type') // Fetch specific columns
+                .select()
+                // .eq
+                .ilike('Name', clinicName) // Filter by the provided clinic name
+                .single(); // Ensure only one record is fetched
+
+            if (clinicError) {
+                console.error('Supabase error:', clinicError);
+                return res.status(500).json({ error: clinicError.message });
+            }
+
+            if (!clinicData) {
+                return res.status(404).json({ error: 'Clinic not found' });
+            }
+
+            console.log('Clinic Data:', clinicData);
+
+            const { Latitude: clinicLat, Longitude: clinicLon, Dentist_Type: clinicService } = clinicData;
+
+            // Search for nearby clinics of the same type within the radius
+            console.log('Searching for nearby clinics...');
+            const R = 6371; // Earth radius in kilometers
+
+            const { data: nearbyClinics, error: nearbyError } = await supabase
+                .from('clinics')
+                // .select('Name, Latitude, Longitude, Dentist_Type')
+                .select()
+                .ilike('Dentist_Type', `%${clinicService}%`) // Match service type
+                .filter('Latitude', 'gte', clinicLat - (radius / R))
+                .filter('Latitude', 'lte', clinicLat + (radius / R))
+                .filter('Longitude', 'gte', clinicLon - (radius / (R * Math.cos(clinicLat * Math.PI / 180))))
+                .filter('Longitude', 'lte', clinicLon + (radius / (R * Math.cos(clinicLat * Math.PI / 180))));
+
+            if (nearbyError) {
+                console.error('Supabase error during nearby search:', nearbyError);
+                return res.status(500).json({ error: nearbyError.message });
+            }
+
+            console.log('Nearby Clinics:', nearbyClinics);
+
+            // Sort results: primary clinic first
+            const results = [
+                { ...clinicData, isPrimary: true },
+                ...nearbyClinics.filter((clinic) => clinic.Name !== clinicName),
+            ];
+
+            return res.status(200).json(results);
+        } catch (err) {
+            console.error('Error fetching clinic data:', err.message);
+            return res.status(500).json({ error: err.message });
+        }
+    }
+
+    // Case 2: No clinic name provided
     try {
-        console.log('Starting search with radius filter...');
+        console.log('Searching clinics by radius and service type...');
+        const R = 6371; // Earth radius in kilometers
 
-        // Earth radius in kilometers
-        const R = 6371;
-
-        // Properly reference the column names matching the database
-        const { data, error } = await supabase
+        const { data: clinics, error: radiusError } = await supabase
             .from('clinics')
+            // .select('Name, Latitude, Longitude, Dentist_Type')
             .select()
-            .ilike('"Dentist_Type"', `%${service}%`) // Ensuring exact match with column name
-
-            // Latitude filter
+            .ilike('Dentist_Type', `%${service}%`) // Match service type
             .filter('Latitude', 'gte', latitude - (radius / R))
             .filter('Latitude', 'lte', latitude + (radius / R))
-
-            // Longitude filter
             .filter('Longitude', 'gte', longitude - (radius / (R * Math.cos(latitude * Math.PI / 180))))
             .filter('Longitude', 'lte', longitude + (radius / (R * Math.cos(latitude * Math.PI / 180))));
 
-        if (error) {
-            console.error('Supabase error:', error);
-            return res.status(500).json({ error: error.message });
+        if (radiusError) {
+            console.error('Supabase error during radius search:', radiusError);
+            return res.status(500).json({ error: radiusError.message });
         }
 
-        console.log('Filtered Data from Supabase:', data);
-        res.json(data);
+        console.log('Clinics by Radius:', clinics);
+        return res.status(200).json(clinics);
     } catch (err) {
         console.error('Error during search:', err.message);
-        res.status(500).json({ error: err.message });
+        return res.status(500).json({ error: err.message });
     }
 };
+
+
 
 // Get clinic by ID
 const getClinicById = async (req, res) => {
