@@ -9,7 +9,44 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 // import { searchClinicsWithRadius } from '../../../controllers/clinicsController'; // נתיב ל-clinicsController
+interface Location {
+  lat?: number;
+  lng?: number;
+  radius: number;
+}
 
+interface Filters {
+  location?: Location;
+  professionalTypes?: string[];
+  availability?: {
+    nextAvailable: string;
+    weekend: boolean;
+    evening: boolean;
+    emergency: boolean;
+    timeSlots: string[];
+  };
+  treatmentType?: string;
+  priceRange?: {
+    min: number;
+    max: number;
+    paymentPlan: boolean;
+    freeConsultation: boolean;
+  };
+  ratings?: {
+    minRating: string;
+    verifiedOnly: boolean;
+    photosOnly: boolean;
+  };
+  clinicTypes?: string[];
+  insurance?: {
+    provider: string;
+    paymentPlan: boolean;
+    digitalPayments: boolean;
+  };
+  socialMedia?: {
+    hasBeforeAfter: boolean;
+  };
+}
 
 
 
@@ -72,6 +109,8 @@ export const createDentalPracticesArray = (dataRows, userLatitude, userLongitude
 };
 
 const Search = () => {
+  const [filters, setFilters] = useState<Filters>({});
+  const [sortBy, setSortBy] = useState("closest-best");
   const [minRating, setMinRating] = useState(0);
   const [practices, setPractices] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -161,8 +200,12 @@ const Search = () => {
 
   const filteredPractices = practices.filter(practice => practice.rating >= minRating);
 
-  const handleRatingChange = (newRating) => {
-    setMinRating(newRating[0]);
+  // const handleRatingChange = (newRating) => {
+  //   setMinRating(newRating[0]);
+  // };
+  const handleFiltersChange = (newFilters: Filters) => {
+    console.log("Filters changed:", newFilters);
+    setFilters(newFilters);
   };
 
   return (
@@ -179,7 +222,8 @@ const Search = () => {
 
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <FilterAccordion onRatingChange={handleRatingChange} />
+        {/* <FilterAccordion onRatingChange={handleRatingChange} /> */}
+        <FilterAccordion onFiltersChange={handleFiltersChange} defaultOpen={true} />
 
         <div className="md:col-span-3 space-y-4">
           <div className="flex justify-between items-center mb-4">
