@@ -40,6 +40,7 @@ export const SearchBar = () => {
   const [location, setLocation] = useState(""); // Location name (city)
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
+  const [suggestions, setSuggestions] = useState([]); // Location suggestions
   const [treatment, setTreatment] = useState(""); // Selected treatment type
   const [locationOpen, setLocationOpen] = useState(false); // Popover state
   const [clinicName, setClinicName] = useState(""); // Clinic name input
@@ -83,12 +84,48 @@ export const SearchBar = () => {
     fetchUserLocation();
   }, []);
 
-  // Fetch coordinates based on city name
-  const fetchCoordinates = async (city) => {
+  // // Fetch coordinates based on city name
+  // const fetchCoordinates = async (city) => {
+  //   try {
+  //     // const response = await fetch(
+  //     //   `https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(
+  //     //     city
+  //     //   )}&format=json`
+  //     // );
+  //     const response = await fetch(
+  //       `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+  //         city
+  //       )}&format=json`
+  //     );
+  //     const data = await response.json();
+  //     if (data && data.length > 0) {
+  //       const { lat, lon } = data[0];
+  //       setLatitude(parseFloat(lat));
+  //       setLongitude(parseFloat(lon));
+  //       console.log(`Coordinates for ${city}: Latitude: ${lat}, Longitude: ${lon}`);
+  //     } else {
+  //       console.error("No results found for the specified city.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching coordinates:", error);
+  //   }
+  // };
+
+  // const handleLocationChange = (e) => {
+  //   const city = e.target.value;
+  //   setLocation(city);
+
+  //   // Fetch coordinates for city when input length > 2
+  //   if (city.length > 2) {
+  //     fetchCoordinates(city);
+  //   }
+  // };
+  // Fetch coordinates based on user query
+  const fetchCoordinates = async (query) => {
     try {
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(
-          city
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+          query
         )}&format=json`
       );
       const data = await response.json();
@@ -96,9 +133,11 @@ export const SearchBar = () => {
         const { lat, lon } = data[0];
         setLatitude(parseFloat(lat));
         setLongitude(parseFloat(lon));
-        console.log(`Coordinates for ${city}: Latitude: ${lat}, Longitude: ${lon}`);
+        console.log(
+          `Coordinates for "${query}": Latitude: ${lat}, Longitude: ${lon}`
+        );
       } else {
-        console.error("No results found for the specified city.");
+        console.error("No results found for the specified query.");
       }
     } catch (error) {
       console.error("Error fetching coordinates:", error);
@@ -106,14 +145,38 @@ export const SearchBar = () => {
   };
 
   const handleLocationChange = (e) => {
-    const city = e.target.value;
-    setLocation(city);
+    const query = e.target.value;
+    setLocation(query);
 
-    // Fetch coordinates for city when input length > 2
-    if (city.length > 2) {
-      fetchCoordinates(city);
+    // Fetch suggestions and coordinates if input length > 2
+    if (query.length > 2) {
+      fetchSuggestions(query); // Fetch autocomplete suggestions
+      fetchCoordinates(query); // Fetch coordinates for the entered query
+    } else {
+      setSuggestions([]); // Clear suggestions if input is too short
     }
   };
+
+  // Fetch autocomplete suggestions
+  const fetchSuggestions = async (query) => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
+          query
+        )}&format=json&addressdetails=1&limit=5`
+      );
+      const data = await response.json();
+      setSuggestions(data || []);
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+    }
+  };
+  const handleSuggestionClick = (suggestion: any) => {
+    setLocation(suggestion.display_name); // Update the input field
+    setSuggestions([]); // Clear suggestions
+    setLocationOpen(false); // Close the dropdown
+  };
+
 
   const handleSearch = () => {
     if (latitude !== null && longitude !== null) {
@@ -128,7 +191,7 @@ export const SearchBar = () => {
   return (
     <div className="flex flex-col lg:flex-row gap-4 w-full max-w-4xl mx-auto bg-white/80 backdrop-blur-lg p-4 rounded-xl shadow-lg">
       {/* Location Input */}
-      <div className="relative flex-[1.5]">
+      {/* <div className="relative flex-[1.5]">
         <Popover open={locationOpen} onOpenChange={setLocationOpen}>
           <PopoverTrigger asChild>
             <div className="relative">
@@ -142,7 +205,40 @@ export const SearchBar = () => {
             </div>
           </PopoverTrigger>
         </Popover>
+      </div> */}
+      {/* Location Input */}
+      <div className="relative flex-[1.5]">
+        <Popover open={locationOpen} onOpenChange={setLocationOpen}>
+          <PopoverTrigger asChild>
+            <div className="relative">
+              <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Input
+                placeholder="Enter a City, Area"
+                className="pl-10 h-12 w-full"
+                value={location} // Value updated automatically
+                onChange={handleLocationChange}
+              />
+            </div>
+          </PopoverTrigger>
+          {/* Dropdown Suggestions */}
+          {suggestions.length > 0 && locationOpen && (
+            <div className="absolute top-14 left-0 w-full bg-white border rounded shadow-lg z-10">
+              <ul>
+                {suggestions.map((suggestion) => (
+                  <li
+                    key={suggestion.place_id}
+                    className="p-2 hover:bg-gray-200 cursor-pointer"
+                    onClick={() => handleSuggestionClick(suggestion)}
+                  >
+                    {suggestion.display_name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </Popover>
       </div>
+
       {/* Clinic Name Input */}
       <div className="relative flex-1">
         <div className="relative">
