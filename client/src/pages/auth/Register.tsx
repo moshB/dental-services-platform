@@ -198,10 +198,10 @@ const Register = ({ userType }: RegisterProps) => {
           email: formData.email,
           password: formData.password,
           full_name: formData.fullName,
-          practice_name: userType === "practice" ? formData.practiceName : undefined,
-          license: userType === "practice" ? formData.license : undefined,
-          company_name: userType === "supplier" ? formData.companyName : undefined,
-          business_registration: userType === "supplier" ? formData.businessRegistration : undefined,
+          // practice_name: userType === "practice" ? formData.practiceName : undefined,
+          // license: userType === "practice" ? formData.license : undefined,
+          // company_name: userType === "supplier" ? formData.companyName : undefined,
+          // business_registration: userType === "supplier" ? formData.businessRegistration : undefined,
         }),
       });
 
