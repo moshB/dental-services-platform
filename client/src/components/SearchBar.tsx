@@ -537,14 +537,14 @@ export const SearchBar = () => {
       const results = await fetchSuggestions(query);
       setSuggestions(results || []);
       setLoading(false);
-    }, 300),
+    }, 600),
     []
   );
 
   const debouncedFetchCoordinates = useCallback(
     debounce(async (query) => {
       await fetchCoordinates(query);
-    }, 300),
+    }, 600),
     []
   );
 
