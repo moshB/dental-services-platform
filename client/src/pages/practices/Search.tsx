@@ -83,6 +83,7 @@ export const createDentalPracticeObject = (data, userLatitude, userLongitude) =>
     distance: calculateDistance(userLatitude, userLongitude, practiceLatitude, practiceLongitude),
     description: data["Specialisms_services"] || "No description available",
     tags: (data["Specialisms_services"] || "").split(",").map(tag => tag.trim()),
+    img: data["id"]==2531 ? "https://lh3.googleusercontent.com/p/AF1QipPxjcE58Q1Ap5g96gqVlm2tF8zCwBlbWqbNIhLM=s680-w680-h510" : "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
     dentists: [
       {
         name: data["Dentist_Type"] || "Unknown Dentist",
@@ -123,8 +124,8 @@ const Search = () => {
   // TODO: For testing purposes, using fixed coordinates for Birmingham
   // const testLatitude = 52.479699;
   // const testLongitude = -1.902691;
-  const userLatitude = 52.479699; //latitude ||// TODO: For testing purposes, using fixed coordinates for Birmingham
-  const userLongitude = -1.902691;//longitude ||
+  const userLatitude =latitude // 52.479699 || latitude; // ||// TODO: For testing purposes, using fixed coordinates for Birmingham
+  const userLongitude = longitude //-1.902691;//longitude ||
 
   // const fetchClinics = async () => {
   //   setLoading(true);
@@ -157,6 +158,8 @@ const Search = () => {
     // const API_URL = process.env.API_URL;
     const API_URL = import.meta.env.VITE_API_URL;
     console.log(API_URL);
+    console.log(treatment , userLatitude , userLongitude, clinicName);
+      
     try {
       const response = await fetch(`${API_URL}/clinics/search`, {
         // const response = await fetch(`${process.env.REACT_APP_API_URL}/clinics/search`, {
@@ -254,7 +257,8 @@ const Search = () => {
                   <div className="flex flex-col md:flex-row gap-6">
                     <div className="w-full md:w-1/3">
                       <img
-                        src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+                        // src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+                        src={practice.img}
                         alt="Dental Practice"
                         className="w-full h-48 object-cover rounded-lg"
                       />
